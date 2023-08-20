@@ -1,0 +1,30 @@
+		AREA RESET, DATA, READONLY
+		EXPORT __Vectors		
+__Vectors
+		DCD 0X10001000
+		DCD Reset_Handler
+		ALIGN
+		AREA mycode, CODE, READONLY
+		ENTRY
+		EXPORT Reset_Handler
+Reset_Handler
+		LDR R0,=NUM
+		LDR R2,=RES
+		MOV R1,#1
+		LDR R3,[R0]
+		BL FACT
+		STR R1,[R2]
+STOP 	B STOP
+FACT	PUSH {R3,LR}
+		SUBS R3,#1
+		CMP R3,#1
+		BNE CALL
+		B HERE
+CALL 	BL FACT
+HERE	POP {R3,LR}
+		MUL R1,R3
+		BX LR	
+NUM DCD 5
+	AREA mydata, DATA, READWRITE
+RES DCD 0
+		END
